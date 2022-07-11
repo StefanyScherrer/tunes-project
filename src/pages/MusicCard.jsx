@@ -6,7 +6,17 @@ import getMusics from '../services/musicsAPI';
 class MusicCard extends Component {
     state = {
       loading: false,
-      favorite: false,
+      favorites: false,
+    }
+
+    componentDidMount = () => {
+      const {
+        favorites,
+      } = this.props;
+
+      this.setState({
+        favorites,
+      });
     }
 
       addToFavorites = async (e) => {
@@ -14,7 +24,7 @@ class MusicCard extends Component {
         } = this.props;
 
         this.setState({
-          favorite: e.target.checked,
+          favorites: e.target.checked,
           loading: true,
         });
 
@@ -33,7 +43,7 @@ class MusicCard extends Component {
         const {
           state: {
             loading,
-            favorite,
+            favorites,
           },
           props: {
             trackName,
@@ -57,7 +67,7 @@ class MusicCard extends Component {
                 type="checkbox"
                 data-testid={ `checkbox-music-${trackId}` }
                 id={ `favorite-${trackId}` }
-                checked={ favorite }
+                checked={ favorites }
                 onChange={ this.addToFavorites }
               />
             </label>
@@ -72,6 +82,7 @@ class MusicCard extends Component {
 MusicCard.propTypes = {
   trackName: PropType.string.isRequired,
   previewUrl: PropType.string.isRequired,
+  favorites: PropType.bool.isRequired,
   trackId: PropType.number.isRequired,
 };
 

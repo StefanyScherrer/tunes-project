@@ -3,6 +3,7 @@ import PropType from 'prop-types';
 import Header from './Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from './MusicCard';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 class Album extends Component {
   state = {
@@ -19,8 +20,16 @@ class Album extends Component {
       },
     } = this.props;
 
-    const [albumInfo, ...songs] = await getMusics(id);
+    const [albumInfo, ...songList] = await getMusics(id);
 
+    const favoriteSongs = await getFavoriteSongs();
+
+    const songs = songList.map((song) => ({
+      ...song,
+      favorite: favoriteSongs.some(([{ trackId }]) => (
+        trackId === song.trackId
+      )),
+    }));
     this.setState({
       albumInfo,
       songs,
@@ -45,6 +54,7 @@ class Album extends Component {
         {songs.map((song) => (
           <MusicCard
             trackId={ song.trackId }
+            favorite={ song.favorite }
             trackName={ song.trackName }
             previewUrl={ song.previewUrl }
             key={ song.trackId }
