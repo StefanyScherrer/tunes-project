@@ -32,6 +32,10 @@ class Login extends React.Component {
         }
       };
 
+      changeRoute = () => {
+        this.setState({ nope: true });
+      }
+
       clickEventButton = async () => {
         const { login } = this.state;
 
@@ -40,6 +44,7 @@ class Login extends React.Component {
         );
         await createUser({ name: login });
         this.setState({ nope: true });
+        this.changeRoute();
       }
 
       render() {
